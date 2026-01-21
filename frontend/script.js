@@ -24,7 +24,7 @@ async function fetchSummonerData() {
         displayPlayerInfo(accountData);
         
         // Buscar partidas
-        const matchesResponse = await fetch(`http://localhost:3000/conta/${accountData.puuid}/partidas`);
+        const matchesResponse = await fetch(`http://localhost:3000/conta/matches/${accountData.puuid}`);
         
         if (!matchesResponse.ok) {
             throw new Error('Erro ao buscar partidas');
@@ -56,7 +56,7 @@ async function displayMatches(matchIds, puuid) {
         const matchId = matchIds[i];
         
         try {
-            const matchResponse = await fetch(`http://localhost:3000/conta/partida/${matchId}`);
+            const matchResponse = await fetch(`http://localhost:3000/conta/match/${matchId}`);
             const matchData = await matchResponse.json();
             
             const playerMatch = matchData.info.participants.find(p => p.puuid === puuid);
@@ -82,17 +82,7 @@ function createMatchElement(matchData, playerData) {
     const gameLength = Math.floor(matchData.info.game_length / 60);
     const gameDate = new Date(matchData.info.game_datetime).toLocaleDateString('pt-BR');
     
-    // Pegar traits ativos (nível 2+)
-    const activeTraits = playerData.traits
-        .filter(trait => trait.tier_current >= 2)
-        .sort((a, b) => b.tier_current - a.tier_current)
-        .slice(0, 4);
-    
-    // Pegar unidades principais
-    const units = playerData.units
-        .filter(unit => unit.tier >= 2)
-        .sort((a, b) => b.tier - a.tier)
-        .slice(0, 6);
+
     
     matchDiv.innerHTML = `
         <div class="match-header">
@@ -105,32 +95,7 @@ function createMatchElement(matchData, playerData) {
                 <span class="game-length">${gameLength}min</span>
             </div>
         </div>
-        
-        <div class="match-content">
-            <div class="traits-section">
-                <h4>🏆 Traits</h4>
-                <div class="traits-list">
-                    ${activeTraits.map(trait => `
-                        <div class="trait-item tier-${trait.tier_current}">
-                            <span class="trait-name">${trait.name}</span>
-                            <span class="trait-level">${trait.num_units}/${trait.tier_current}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            
-            <div class="units-section">
-                <h4>⚔️ Composição</h4>
-                <div class="units-list">
-                    ${units.map(unit => `
-                        <div class="unit-item">
-                            <span class="unit-name">${unit.character_id}</span>
-                            <div class="unit-stars">${'⭐'.repeat(unit.tier)}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        </div>
+        d
     `;
     
     return matchDiv;
@@ -154,7 +119,7 @@ function showLoading(show) {
 
 function showError(message) {
     const errorDiv = document.getElementById('error-message');
-    errorDiv.querySelector('p').textContent = `❌ ${message}`;
+    errorDiv.querySelector('p').textContent = message;
     errorDiv.classList.remove('hidden');
 }
 

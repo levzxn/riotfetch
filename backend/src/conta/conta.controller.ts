@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Param } from '@nestjs/common';
 import { ContaService } from './conta.service';
 import { BuscarContaDto } from './dto/buscar-conta.dto';
 
@@ -11,13 +11,14 @@ export class ContaController {
         return this.contaService.buscarPorRiotID(dto.nomeConta, dto.tagLine);
     }
 
-    @Get(':puuid')
-    buscarPartidasPorPuuid(@Query('puuid') puuid: string) {
+    @Get('matches/:puuid')
+    buscarPartidasPorPuuid(@Param('puuid') puuid: string) {
         return this.contaService.buscarPartidasPorPuuid(puuid);
     }
 
     @Get('match/:matchId')
-    buscarDetalhesPartida(@Query('matchId') matchId: string) {
+    buscarDetalhesPartida(@Param('matchId') matchId: string) {
         return this.contaService.buscarDetalhesPartida(matchId);
     }
+
 }

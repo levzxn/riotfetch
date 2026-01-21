@@ -48,6 +48,8 @@ export class ContaService {
     }
 
     async buscarDetalhesPartida(matchId: string) {
+        console.log('Buscando detalhes da partida para matchId:', matchId);
+        console.log('Usando URL da API da Riot:', this.riotApiUrl);
         const response = await fetch(
             `${this.riotApiUrl}/tft/match/v1/matches/${matchId}`,
             {
