@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RiotFetch - TFT Stats</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>RiotFetch TFT</h1>
+            <p>Veja suas estatísticas do Teamfight Tactics</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="nomeInvocador" placeholder="Nome do Invocador" class="input-field">
+                <input type="text" id="taglineInvocador" placeholder="#TAG" class="input-field">
+                <button onclick="fetchSummonerData()" id="buscar" class="search-btn">
+                    <span id="btn-text">Buscar</span>
+                    <div id="loading" class="loading hidden"></div>
+                </button>
+            </div>
+        </div>
+
+        <div id="player-info" class="player-info hidden">
+            <div class="player-card">
+                <h2 id="player-name"></h2>
+                <p id="player-puuid"></p>
+            </div>
+        </div>
+
+        <div id="matches-section" class="matches-section hidden">
+            <h3>📊 Partidas Recentes</h3>
+            <div id="matches-container" class="matches-container">
+                <!-- Partidas serão inseridas aqui -->
+            </div>
+        </div>
+
+        <div id="error-message" class="error-message hidden">
+            <p>❌ Erro ao buscar dados. Verifique o nome e tag.</p>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
